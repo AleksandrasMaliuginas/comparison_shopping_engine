@@ -1,0 +1,360 @@
+﻿@using System.Diagnostics
+@using CheapShopWeb.Models
+@using Microsoft.Ajax.Utilities
+@model PagedList.IPagedList<CheapShopWeb.Models.Product>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <form>
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col-auto">
+                        <button type="button" onclick="alertboxFunction()" style="border: 0; background: transparent">?</button>
+
+                        @*<button onclick="alertboxFunction()">?</button>*@
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-lg btn-success" onClick="scrape('@Request.Params["search"]', '@Request.Params["source"]')">Scrape</button>
+                    </div>
+                    <!--end of col-->
+                    <div class="col">
+                        <input class="form-control form-control-lg" type="search" name="search" placeholder="@Request.Params["search"]">
+                    </div>
+                    <!--end of col-->
+                    <div class="col-auto">
+                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                    </div>
+                    <!--end of col-->
+                </div>
+            </form>
+        </div>
+        <!--end of col-->
+    </div>
+
+</div>
+@if (Model.Count() > 0 && !string.IsNullOrWhiteSpace(@Request.Params["search"]))
+{
+    <div class="row">
+        <div class="col-sm-4 col-md-3 col-lg-2">
+            <button type="button" class="btn btn-lg btn-success" data-toggle="collapse" id="collapsebutton" data-target="#demo" onclick="loadchecks()">Filters</button>
+            <div id="demo" class="collapse">
+                <form id="form1" class="form1">
+                    @*border border-dark*@
+
+                    <div class="form-group">
+                        <label for="priceFrom">Min price</label>
+                        <input step=".01" min="0" type="number" onchange="(function(el) { el.value = parseFloat(el.value).toFixed(2); })(this)" class="form-control" id="priceFrom" name="priceFrom" placeholder="@Request.Params["priceFrom"]">
+                    </div>
+                    <div class="form-group">
+                        <label for="priceTo">Max price</label>
+                        <input step=".01" min="0" type="number" onchange="(function(el) { el.value = parseFloat(el.value).toFixed(2); })(this)" class="form-control" id="priceTo" name="priceTo" placeholder="@Request.Params["priceTo"]">
+                    </div>
+                    <p>Sources:</p>
+                    <div class="form-group form-check" name="source">
+                        <input type="checkbox" class="form-check-input" id="Rde" name="source" value="Rde"> <label for="Rde">Rde (@ViewBag.siteCounts[0])</label><br />
+                        <input type="checkbox" class="form-check-input" name="source" id="Bigbox" value="Bigbox">  <label for="Bigbox">Bigbox (@ViewBag.siteCounts[1])</label><br />
+                        <input type="checkbox" class="form-check-input" name="source" id="Pigu" value="Pigu"><label for="Pigu">Pigu (@ViewBag.siteCounts[2])</label><br />
+                        <input type="checkbox" class="form-check-input" name="source" id="Senukai" value="Senukai"><label for="Senukai">Senukai (@ViewBag.siteCounts[6])</label><br />
+                        <input type="checkbox" class="form-check-input" name="source" id="Autoaibe" value="Autoaibe"><label for="Autoaibe">Autoaibe (@ViewBag.siteCounts[7])</label><br />
+                        <input type="checkbox" class="form-check-input" name="source" id="Topocentras" value="Topocentras"><label for="Topocentras">Topocentras (@ViewBag.siteCounts[4])</label><br />
+                        <input type="checkbox" class="form-check-input" name="source" id="Ermitazas" value="Ermitazas"><label for="Ermitazas">Ermitazas (@ViewBag.siteCounts[9])</label><br />
+                        <input type="checkbox" class="form-check-input" name="source" id="Skytech" value="Skytech"><label for="Skytech">Skytech (@ViewBag.siteCounts[5])</label><br />
+                        <input type="checkbox" class="form-check-input" name="source" id="Varle" value="Varle"><label for="Varle">Varle (@ViewBag.siteCounts[10])</label><br />
+                        <input type="checkbox" class="form-check-input" name="source" id="Eoltas" value="Eoltas"><label for="Eoltas">Eoltas (@ViewBag.siteCounts[8])</label><br />
+                        <input type="checkbox" class="form-check-input" name="source" id="Novastar" value="Novastar"><label for="Novastar">Novastar (@ViewBag.siteCounts[3])</label><br />
+                    </div>
+                    <p>Groups:</p>
+                    <div class="form-group form-check" name="group">
+                        <input type="checkbox" class="form-check-input" name="group" id="Computer" value="Computer"><label for="Computer">Computer (@ViewBag.groupCounts[11])</label> <br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Phone" value="Phone"><label for="Phone">Phone (@ViewBag.groupCounts[14])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Garden" value="Garden"><label for="Garden">Garden (@ViewBag.groupCounts[13])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Leisure" value="Leisure"><label for="Leisure">Leisure (@ViewBag.groupCounts[12])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Books" value="Books"><label for="Books">Books (@ViewBag.groupCounts[10])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Car" value="Car"><label for="Car">Car (@ViewBag.groupCounts[2])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Stationery" value="Stationery"><label for="Stationery">Stationery (@ViewBag.groupCounts[9])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Animals" value="Animals"><label for="Animals">Animals (@ViewBag.groupCounts[6])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Camera" value="Camera"><label for="Camera">Camera (@ViewBag.groupCounts[8])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Audio" value="Audio"><label for="Audio">Audio (@ViewBag.groupCounts[5])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Beauty" value="Beauty"><label for="Beauty">Beauty (@ViewBag.groupCounts[7])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Household" value="Household"><label for="Household">Household (@ViewBag.groupCounts[4])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Furniture" value="Furniture"><label for="Furniture">Furniture (@ViewBag.groupCounts[3])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Clothing" value="Clothing"><label for="Clothing">Clothing (@ViewBag.groupCounts[1])</label><br />
+                        <input type="checkbox" class="form-check-input" name="group" id="Kids" value="Kids"><label for="Kids">Kids (@ViewBag.groupCounts[0])</label><br />
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-success">Filter</button>
+                    <p> </p>
+                    <input type="button" value="Clear Filter" class="btn btn-lg btn-success" onclick="location.href='@Url.Action("Search", "Search",new {search = @Request.Params["search"]})'" />
+                    <p> </p>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-8 col-md-9 col-lg-10">
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="container-fluid border border-dark mb-4" style="margin-top:10px">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3">
+                                <img class="img-fluid mx-auto d-block" src=@item.photo_link alt="" />
+                            </div>
+                            <div class="col-sm-12 col-md-6 border border-primary">
+                                <a href=@Url.Action("ProductInfo", "ProductInfo", new {name = @item.name, link = @item.product_link, photo = @item.photo_link, price = @item.price, source = @item.source, group = @item.group, searchString = @Request.Params["search"]}, null)>
+                                    <h2>@item.name</h2>
+                                </a>
+                                <p>Grupė: @item.group</p>
+                                <p>Šaltinis: @item.source</p>
+                            </div>
+
+                            <div class="col-sm-12 col-md-3">
+                                <h2>@item.price</h2>
+                                <a href=@item.product_link class="btn btn-primary">Link</a>
+                                @if (Request.IsAuthenticated)
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-group">
+                                        <button class="btn fa fa-heart like"
+                                                onclick="$(this).toggleClass('fa fa-heart-o'); $(this).toggleClass('fa fa-heart'); like(@item.id)">
+                                        </button>
+                                    </div>
+
+
+                                }
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <br />
+        @{
+
+
+            var search = ViewBag.search;
+            var priceFrom = ViewBag.priceFrom;
+            var priceTo = ViewBag.priceTo;
+            var group = ViewBag.group;
+            var source = ViewBag.source;
+            var parameters = new RouteValueDictionary();
+            if (search != null)
+            {
+                parameters.Add("search", search);
+            }
+            if (priceFrom != null)
+            {
+                parameters.Add("priceFrom", priceFrom);
+            }
+            if (priceTo != null)
+            {
+                parameters.Add("priceTo", priceTo);
+            }
+            if (group != null)
+            {
+                parameters.Add("group", group);
+            }
+            if (source != null)
+            {
+                parameters.Add("source", source);
+            }
+
+
+            RouteValueDictionary generateRouteValues(int page)
+            {
+                if (parameters.ContainsKey("page"))
+                {
+                    parameters["page"] = page;
+                }
+                else
+                {
+                    parameters.Add("page", page);
+                }
+
+                return parameters;
+            }
+
+        }
+        <div class="mx-auto">
+
+            @Html.PagedListPager(Model, page => Url.Action("Search",
+                generateRouteValues(page)))
+        </div>
+    </div>
+
+    @*</div>*@
+}
+else
+{
+    <div><p class="h4">Nothing</p></div>
+}
+
+<script type="text/javascript">
+    function scrape(query, source) {
+        var msg = JSON.stringify({ "query": query, "source": source });
+        console.log(msg);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/Search/Scrape");
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(msg);
+    }
+</script>
+<script type="text/javascript">
+    function like(id) {
+        var msg = JSON.stringify({ "id": id });
+        console.log(msg);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/User/Like");
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(msg);
+    }
+</script>
+
+<style>
+    .form1 {
+        padding: 5px;
+    }
+
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
+    }
+</style>
+@section scripts{
+    @*     <script type="text/javascript"> *@
+    @*         function sendLike(id) { *@
+    @*             return function() { *@
+    @*                 var data = { id: id }; *@
+    @*                 @Html.AntiForgeryToken() *@
+    @*                 fetch("/User/Like", *@
+    @*                     { *@
+    @*                         method: "POST", *@
+    @*                         body: JSON.stringify(data) *@
+    @*                     }).then(res => { *@
+    @*                     console.log("Request complete! response:", res); *@
+    @*                 }); *@
+    @*             } *@
+    @*         } *@
+    @*     </script> *@
+    <script>
+        function loadchecks() {
+            var queryString = window.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var page_source = urlParams.get('source');
+            var params = page_source.split(',');
+            var checkboxes = document.getElementsByTagName('input');
+            for (var param in params) {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if ((checkboxes[i].type == 'checkbox') && (checkboxes[i].value == params[param])) {
+                        document.getElementById(checkboxes[i].value).checked = true;
+                    }
+                }
+            }
+            var page_group = urlParams.get('group');
+            var params = page_group.split(',');
+            var checkboxes = document.getElementsByTagName('input');
+            for (var param in params) {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if ((checkboxes[i].type == 'checkbox') && (checkboxes[i].value == params[param])) {
+                        document.getElementById(checkboxes[i].value).checked = true;
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        function alertboxFunction() {
+            alert("If You dont find what you are looking for, just press 'Scrape' and we will add items into our database as soon as possible.😄\n");
+        }
+    </script>
+    <script>
+        document.onload = function () {
+            var all_inputs = document.getElementsByTagName("input");
+            document.onload = function () {
+                for (var i = 0; i < all_inputs.length; i++) {
+                    if (all_inputs[i].getAttribute("type") === "checkbox") {
+                        var checkbox = all_inputs[i];
+                        // Change the state (checked/unchecked) if the state is saved in localStorage
+                        var value = localStorage.getItem(checkbox.getAttribute("id"));
+                        if (value != null) {
+                            if (value == true)
+                                checkbox.checked = true;
+                            else if (value == false)
+                                checkbox.checked = false;
+                        }
+                        // Then put onchange listeners to notify when checkbox state changes in order to save the state in the localStorage
+                        checkbox.addEventListener('change',
+                            function () {
+                                localStorage.setItem(checkbox.getAttribute("id"), checkbox.checked);
+                            });
+                    }
+                }
+            }
+        }
+    </script>
+    <script type="text/javascript">
+
+        var kvp = [];
+        var params = [];
+        $("#form1").submit(function (e) {
+            e.preventDefault();
+            kvp = document.location.search.substr(1).split('&');
+            var sources = [];
+            $("input:checkbox[name=source]:checked").each(function () {
+
+                sources.push($(this).val());
+                //$(this).prop("checked", false);
+            });
+
+            var group = [];
+            $("input:checkbox[name=group]:checked").each(function () {
+
+                group.push($(this).val());
+                //$(this).prop("checked", false);
+            });
+
+
+            addParameter("source", sources);
+            addParameter("group", group);
+
+            var fromprice = document.getElementById("priceFrom").value;
+            addParameter("priceFrom", fromprice);
+
+            var toprice = document.getElementById("priceTo").value;
+            addParameter("priceTo", toprice);
+
+            params = kvp.join('&');
+            document.location.search = params;
+        });
+
+        function addParameter(k, v) {
+            if (v.length > 0) {
+                var key = encodeURIComponent(k);
+                var value = encodeURIComponent(v);
+                var i = 0;
+                for (; i < kvp.length; i++) {
+                    if (kvp[i].startsWith(key + '=')) {
+                        var pair = kvp[i].split('=');
+                        pair[1] = value;
+                        kvp[i] = pair.join('=');
+                        break;
+                    }
+                }
+                if (i >= kvp.length) {
+                    kvp[kvp.length] = [key, value].join('=');
+                }
+            }
+        }
+    </script>
+}
+
