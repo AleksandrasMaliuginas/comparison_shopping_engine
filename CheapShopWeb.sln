@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheapShopWeb", "CheapShopWe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{A6B01B6A-5686-4E5E-A3DC-2B62836F0A97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComparisonEngine", "ComparisonEngine\ComparisonEngine.csproj", "{2700CC87-B61D-4CD2-B01C-ECC57BF9F823}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComparisonEngine", "ComparisonEngine\ComparisonEngine.csproj", "{2700CC87-B61D-4CD2-B01C-ECC57BF9F823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbService Example", "DbService Example\DbService Example.csproj", "{6B0C8114-0E97-4D1A-8949-113C4D6DF032}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{2700CC87-B61D-4CD2-B01C-ECC57BF9F823}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2700CC87-B61D-4CD2-B01C-ECC57BF9F823}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2700CC87-B61D-4CD2-B01C-ECC57BF9F823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B0C8114-0E97-4D1A-8949-113C4D6DF032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B0C8114-0E97-4D1A-8949-113C4D6DF032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B0C8114-0E97-4D1A-8949-113C4D6DF032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B0C8114-0E97-4D1A-8949-113C4D6DF032}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
