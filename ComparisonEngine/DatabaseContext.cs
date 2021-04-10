@@ -27,6 +27,7 @@ namespace ComparisonEngine
             {
                 entity.ToTable("products", _schema);
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).UseIdentityAlwaysColumn(); 
 
                 entity.HasIndex(e => e.Title)
                     .IsUnique();
@@ -50,6 +51,7 @@ namespace ComparisonEngine
             {
                 entity.ToTable("attributes", _schema);
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).UseIdentityAlwaysColumn();
 
                 entity.HasIndex(e => new { e.Name, e.Value })
                     .IsUnique();
@@ -59,20 +61,22 @@ namespace ComparisonEngine
             {
                 entity.ToTable("real_products", _schema);
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).UseIdentityAlwaysColumn();
 
                 entity.HasOne(e => e.AbstractProduct)
                     .WithMany(e => e.RealProducts)
                     .HasForeignKey(e => e.AbstractProductId);
 
-                entity.HasOne(e => e.EShop)
-                    .WithMany(e => e.RealProducts)
-                    .HasForeignKey(e => e.EShopId);
+                //entity.HasOne(e => e.EShop)
+                //    .WithMany(e => e.RealProducts)
+                //    .HasForeignKey(e => e.EShopId);
             });
 
             modelBuilder.Entity<EShop>(entity =>
             {
                 entity.ToTable("eshops", _schema);
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).UseIdentityAlwaysColumn();
 
                 entity.HasIndex(e => e.Title)
                     .IsUnique();

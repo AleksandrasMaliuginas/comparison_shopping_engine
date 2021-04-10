@@ -16,13 +16,15 @@ namespace ComparisonEngine.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.4")
+                .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Domain.Attribute", b =>
                 {
-                    b.Property<double>("Id")
-                        .HasColumnType("double precision");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -40,8 +42,10 @@ namespace ComparisonEngine.Migrations
 
             modelBuilder.Entity("Domain.EShop", b =>
                 {
-                    b.Property<double>("Id")
-                        .HasColumnType("double precision");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
 
                     b.Property<string>("Title")
                         .HasColumnType("text");
@@ -59,11 +63,13 @@ namespace ComparisonEngine.Migrations
 
             modelBuilder.Entity("Domain.Product", b =>
                 {
-                    b.Property<double>("Id")
-                        .HasColumnType("double precision");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
 
-                    b.Property<double>("Popularity")
-                        .HasColumnType("double precision");
+                    b.Property<long>("Popularity")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Title")
                         .HasColumnType("text");
@@ -78,11 +84,11 @@ namespace ComparisonEngine.Migrations
 
             modelBuilder.Entity("Domain.ProductAttribute", b =>
                 {
-                    b.Property<double>("ProductId")
-                        .HasColumnType("double precision");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<double>("AttributeId")
-                        .HasColumnType("double precision");
+                    b.Property<long>("AttributeId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("ProductId", "AttributeId");
 
@@ -93,14 +99,16 @@ namespace ComparisonEngine.Migrations
 
             modelBuilder.Entity("Domain.RealProduct", b =>
                 {
-                    b.Property<double>("Id")
-                        .HasColumnType("double precision");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
 
-                    b.Property<double>("AbstractProductId")
-                        .HasColumnType("double precision");
+                    b.Property<long>("AbstractProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<double>("EShopId")
-                        .HasColumnType("double precision");
+                    b.Property<long?>("EShopId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("LastCheck")
                         .HasColumnType("timestamp without time zone");
@@ -150,15 +158,11 @@ namespace ComparisonEngine.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.EShop", "EShop")
+                    b.HasOne("Domain.EShop", null)
                         .WithMany("RealProducts")
-                        .HasForeignKey("EShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EShopId");
 
                     b.Navigation("AbstractProduct");
-
-                    b.Navigation("EShop");
                 });
 
             modelBuilder.Entity("Domain.Attribute", b =>
