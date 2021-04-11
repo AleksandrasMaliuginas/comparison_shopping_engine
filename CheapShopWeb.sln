@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComparisonEngine", "ComparisonEngine\ComparisonEngine.csproj", "{2700CC87-B61D-4CD2-B01C-ECC57BF9F823}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbService Example", "DbService Example\DbService Example.csproj", "{6B0C8114-0E97-4D1A-8949-113C4D6DF032}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbService Example", "DbService Example\DbService Example.csproj", "{6B0C8114-0E97-4D1A-8949-113C4D6DF032}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{45E8F777-7110-435B-BC89-5CE55B41D944}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6B0C8114-0E97-4D1A-8949-113C4D6DF032}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B0C8114-0E97-4D1A-8949-113C4D6DF032}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B0C8114-0E97-4D1A-8949-113C4D6DF032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45E8F777-7110-435B-BC89-5CE55B41D944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45E8F777-7110-435B-BC89-5CE55B41D944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45E8F777-7110-435B-BC89-5CE55B41D944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45E8F777-7110-435B-BC89-5CE55B41D944}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
