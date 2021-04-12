@@ -20,6 +20,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: msbuild /home/runner/work/comparison_shopping_engine/comparison_shopping_engine/CheapShopWeb/CheapShopWeb.csproj
+      run: dotnet build /p:VisualStudioVersion=14.0
     - name: Test
       run: dotnet test --no-build --verbosity normal
