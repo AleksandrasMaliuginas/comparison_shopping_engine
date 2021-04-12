@@ -17,23 +17,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Setup MSBuild.exe
+    - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
-      with:
-        vs-version: '[16.8,16.9)'
-    - name: Restore NuGet Packages
-      run: nuget restore $env:SolutionPath
-    - name: Calculate next version
-      uses: cezarypiatek/NextVersionGeneratorAction@0.4
-      with:
-        minor-pattern: '\bAdd\b'
-        patch-pattern: '.*'
-        output-to-env-variable: 'VersionPrefix'
-    - name: Set version for Visual Studio Extension
-      uses: cezarypiatek/VsixVersionAction@1.0
-      with:
-        version: '${{env.VersionPrefix}}+${{env.VersionSuffix}}'
-        vsix-manifest-file: ${{ env.VsixManifestPath }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
