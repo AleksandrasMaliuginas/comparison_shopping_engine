@@ -26,8 +26,6 @@ jobs:
     - name: Create Build Directory
       run: mkdir _build
       
-    - name: Restore Packages
-      run: nuget restore EzRep.sln
     - name: Restore dependencies
       run: dotnet restore
     - name: build
