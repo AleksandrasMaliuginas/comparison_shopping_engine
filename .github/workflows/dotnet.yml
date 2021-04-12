@@ -32,6 +32,6 @@ jobs:
       run: mkdir _build
       
     - name: build
-      run: dotnet msbuild 
+      run: dotnet build 
     - name: Test
       run: dotnet test --no-build --verbosity normal
