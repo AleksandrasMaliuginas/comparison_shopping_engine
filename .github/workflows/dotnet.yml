@@ -19,9 +19,6 @@ jobs:
         dotnet-version: 5.0.x
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
-
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.2
       
     - name: Navigate to Workspace
       run: cd $GITHUB_WORKSPACE
@@ -33,5 +30,7 @@ jobs:
       run: nuget restore EzRep.sln
     - name: Restore dependencies
       run: dotnet restore
+    - name: build
+      run: dotnet build 
     - name: Test
       run: dotnet test --no-build --verbosity normal
