@@ -6,6 +6,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace DbService_Example
 {
@@ -69,6 +70,7 @@ namespace DbService_Example
                     var productsPigu = driverPigu.FindElement(By.CssSelector("div.product-list.all-products-visible.clearfix.product-list--equal-height"));
                     string pricePigu = productsPigu.FindElement(By.CssSelector("span.price.notranslate")).Text.Substring(2);
                     pricePigu = pricePigu.Replace(",", CultureInfo.InvariantCulture.NumberFormat.NumberDecimalSeparator);
+                    pricePigu = Regex.Replace(pricePigu, @"\s+", "");
                     string titlePigu = productsPigu.FindElement(By.CssSelector("p.product-name")).Text;
                     urlPigu = productsPigu.FindElement(By.CssSelector("a")).GetAttribute("href");
                     var realProducPigu = new RealProduct
