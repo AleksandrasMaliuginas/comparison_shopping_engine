@@ -20,6 +20,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build /p:VisualStudioVersion=14.0
+      run: dotnet build /p:VisualStudioVersion=16.0
     - name: Test
       run: dotnet test --no-build --verbosity normal
