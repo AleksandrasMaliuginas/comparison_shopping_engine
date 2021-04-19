@@ -12,9 +12,11 @@ namespace DbService_Example
 {
     public class Program
     {
-        static private DatabaseContext context = new DatabaseContext();
+        static private DatabaseContext context;
         public static void Main(string[] args)
         {
+            context = new DatabaseContext();
+
             var options = new ChromeOptions();
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
@@ -30,9 +32,15 @@ namespace DbService_Example
             {
                 string[] productInfo = product.Text.Split('\n');
 
+                string absTitle = productInfo[0].Replace("(Atnaujinta)","").
+                    Replace("(Pažeista pakuotė)","").
+                    Replace("(Ekspozicinė prekė)", "");
+                int index = absTitle.IndexOf("+DOVANA");
+                if (index != -1) absTitle = absTitle.Substring(0, index);
+
                 var dbProduct = new Product
                 {
-                    Title = productInfo[0],
+                    Title = absTitle,
                     Popularity = 0
                 };
                 var addedProduct = context.Products.Add(dbProduct);
@@ -63,7 +71,7 @@ namespace DbService_Example
                 context.RealProducts.Add(realProductVarle);
                 addedProduct.Entity.RealProducts.Add(realProductVarle);
 
-                driverPigu.Navigate().GoToUrl("https://pigu.lt/lt/search?q=" + productInfo[0]);
+                driverPigu.Navigate().GoToUrl("https://pigu.lt/lt/search?q=" + absTitle);
                 string urlPigu;
                 try
                 {
